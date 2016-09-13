@@ -66,7 +66,8 @@ static int pack_compel_obj(char **obj, size_t nobj,
 
 	f = popen(command, "r");
 	if (f) {
-		fgets(data, sizeof(data), f);
+		if (!fgets(data, sizeof(data), f))
+			pr_debug("fgets returned NULL\n");
 		ret = data[0] == '\0' ? 0 : 1;
 		pclose(f);
 		if (!ret)

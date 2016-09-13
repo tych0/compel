@@ -52,7 +52,8 @@ static void __print_on_level(unsigned int loglevel, const char *format, va_list 
 		return;
 
 	size = vsnprintf(logbuf, PAGE_SIZE, format, params);
-	write(logfd, logbuf, size);
+	if (write(logfd, logbuf, size) != size) {
+	}
 }
 
 void print_on_level(unsigned int loglevel, const char *format, ...)
