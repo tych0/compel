@@ -698,3 +698,11 @@ recover:
 	ret |= unseize_task(pid, task_state);
 	return ret;
 }
+
+int parasite_set_return_value(parasite_ctl_t *ctl, unsigned long val)
+{
+	if (IS_ERR_OR_NULL(ctl))
+		return (int)PTR_ERR(ctl);
+	USER_REGS_RET(&ctl->thread_ctx_orig.regs) = val;
+	return 0;
+}

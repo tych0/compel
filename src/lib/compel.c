@@ -60,3 +60,8 @@ int libcompel_verify_packed(char *path)
 {
 	return verify_elf_packed(path);
 }
+
+int libcompel_set_return_value(compel_exec_handle_t p, unsigned long val)
+{
+	return parasite_set_return_value((parasite_ctl_t *)p, val);
+}
