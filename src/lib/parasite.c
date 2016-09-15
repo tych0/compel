@@ -706,3 +706,11 @@ int parasite_set_return_value(parasite_ctl_t *ctl, unsigned long val)
 	USER_REGS_RET(&ctl->thread_ctx_orig.regs) = val;
 	return 0;
 }
+
+int parasite_set_regs(parasite_ctl_t *ctl, user_regs_struct_t *regs)
+{
+	if (IS_ERR_OR_NULL(ctl))
+		return (int)PTR_ERR(ctl);
+	memcpy(&ctl->thread_ctx_orig.regs, regs, sizeof(*regs));
+	return 0;
+}

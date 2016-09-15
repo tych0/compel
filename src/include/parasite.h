@@ -28,6 +28,7 @@ extern parasite_ctl_t *parasite_start(pid_t pid, char *path, void *arg_p, unsign
 extern int parasite_end(parasite_ctl_t *ptr);
 extern int parasite_execute_syscall_trap(parasite_ctl_t *ctl, user_regs_struct_t *regs);
 extern int parasite_set_return_value(parasite_ctl_t *ctl, unsigned long val);
+extern int parasite_set_regs(parasite_ctl_t *ctl, user_regs_struct_t *regs);
 
 static inline int ctl_sock(parasite_ctl_t *ctl)
 {

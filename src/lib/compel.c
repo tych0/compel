@@ -65,3 +65,8 @@ int libcompel_set_return_value(compel_exec_handle_t p, unsigned long val)
 {
 	return parasite_set_return_value((parasite_ctl_t *)p, val);
 }
+
+int libcompel_set_regs(compel_exec_handle_t p, void *regs)
+{
+	return parasite_set_regs((parasite_ctl_t *)p, regs);
+}
