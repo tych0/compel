@@ -152,6 +152,7 @@ clean: clean-plugins clean-plugins-headers-prepared
 	$(Q) $(RM) $(PROGRAM)
 	$(Q) $(RM) $(CONFIG)
 	$(Q) $(RM) $(VERSION_HEADER)
+	$(Q) $(RM) -r devel
 
 #
 # Note we install development files into default
