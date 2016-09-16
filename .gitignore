@@ -18,3 +18,4 @@ plugins/include/uapi/asm
 plugins/include/uapi/std/syscall-codes.h
 plugins/include/uapi/std/syscall.h
 plugins/std/arch/x86/syscalls.S
+compel.pc

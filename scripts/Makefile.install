@@ -1,0 +1,8 @@
+DESTDIR?= /$
+PREFIX?= /usr/local$
+LIBDIR?= $(PREFIX)/lib$
+INCLUDEDIR?= $(PREFIX)/include/compel
+LIBEXECDIR?= $(PREFIX)/libexec$
+
+compel.pc: compel.pc.in
+	$(Q) sed -e 's,@version@,$(VERSION),' -e 's,@libdir@,$(LIBDIR),' -e 's,@includedir@,$(dir $(INCLUDEDIR)),' compel.pc.in > compel.pc
