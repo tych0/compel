@@ -17,3 +17,4 @@ install: compel.pc
 	$(Q) mkdir -p $(LIBDIR)/pkgconfig
 	$(Q) install -m 644 compel.pc $(LIBDIR)/pkgconfig/compel.pc
 	$(Q) install -m 555 compel $(BINDIR)/compel
+	$(Q) install -m 555 src/lib/libcompel.so $(LIBDIR)/libcompel.so
