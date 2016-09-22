@@ -67,6 +67,7 @@ export VERSION_MAJOR VERSION_MINOR VERSION_SUBLEVEL VERSION_EXTRA VERSION_NAME
 
 include scripts/Makefile.version
 include scripts/Makefile.config
+include scripts/Makefile.install
 
 LIBS		:= -lrt
 
@@ -152,6 +153,8 @@ clean: clean-plugins clean-plugins-headers-prepared
 	$(Q) $(RM) $(PROGRAM)
 	$(Q) $(RM) $(CONFIG)
 	$(Q) $(RM) $(VERSION_HEADER)
+	$(Q) $(RM) -r devel
+	$(Q) $(RM) compel.pc
 
 #
 # Note we install development files into default
