@@ -1,5 +1,6 @@
 libdir=@libdir@
 includedir=@includedir@
+pluginlibdir=-L@pluginlibdir@
 
 Name: compel
 Description: Inject code into another process' address space
