@@ -4,6 +4,7 @@ LIBDIR?= $(PREFIX)/lib
 INCLUDEDIR?= $(PREFIX)/include
 LIBEXECDIR?= $(PREFIX)/libexec$
 BINDIR?= $(PREFIX)/bin
+PKGCONFIG?= $(PREFIX)/share/pkgconfig
 
 compel.pc: compel.pc.in
 	$(Q) sed -e 's,@version@,$(VERSION),' \
@@ -18,7 +19,7 @@ install: compel.pc
 	$(Q) $(MAKE) $(run) -f Makefile \
 		devel-default-includedir=$(INCLUDEDIR) \
 		devel-default-libdir=$(LIBDIR) install-devel
-	$(Q) mkdir -p $(LIBDIR)/pkgconfig
-	$(Q) install -m 644 compel.pc $(LIBDIR)/pkgconfig/compel.pc
-	$(Q) install -m 555 compel $(BINDIR)/compel
-	$(Q) install -m 555 src/lib/libcompel.so $(LIBDIR)/libcompel.so
+	$(Q) mkdir -p $(PKGCONFIG)
+	$(Q) install -D -m 644 compel.pc $(PKGCONFIG)/compel.pc
+	$(Q) install -D -m 555 compel $(BINDIR)/compel
+	$(Q) install -D -m 555 src/lib/libcompel.so $(LIBDIR)/libcompel.so
