@@ -14,8 +14,8 @@ devel-lds			+= pack.lds.S
 devel-dirs			:=
 devel-files			:=
 
-devel-default-includedir	:= devel/include
-devel-default-libdir		:= devel/lib
+devel-default-includedir	?= devel/include
+devel-default-libdir		?= devel/lib
 
 #
 # Prepare direcory structure for headers and libraries.

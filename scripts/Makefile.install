@@ -1,8 +1,17 @@
-DESTDIR?= /$
-PREFIX?= /usr/local$
-LIBDIR?= $(PREFIX)/lib$
-INCLUDEDIR?= $(PREFIX)/include/compel
+DESTDIR?= $
+PREFIX?= $(DESTDIR)/usr/local$
+LIBDIR?= $(PREFIX)/lib
+INCLUDEDIR?= $(PREFIX)/include
 LIBEXECDIR?= $(PREFIX)/libexec$
 
 compel.pc: compel.pc.in
-	$(Q) sed -e 's,@version@,$(VERSION),' -e 's,@libdir@,$(LIBDIR),' -e 's,@includedir@,$(dir $(INCLUDEDIR)),' compel.pc.in > compel.pc
+	$(Q) sed -e 's,@version@,$(VERSION),' -e 's,@libdir@,$(LIBDIR)/compel,' -e 's,@includedir@,$(INCLUDEDIR),' compel.pc.in > compel.pc
+
+.PHONY: install
+install: compel.pc
+	$(Q) $(MAKE) $(run) -f Makefile headers-dst-dir=$(INCLUDEDIR) install-headers
+	$(Q) $(MAKE) $(run) -f Makefile \
+		devel-default-includedir=$(INCLUDEDIR) \
+		devel-default-libdir=$(LIBDIR) install-devel
+	$(Q) mkdir -p $(LIBDIR)/pkgconfig
+	$(Q) install -m 644 compel.pc $(LIBDIR)/pkgconfig/compel.pc
