@@ -1,6 +1,8 @@
 #ifndef __COMPEL_PARASITE_H__
 #define __COMPEL_PARASITE_H__
 
+#include <stdbool.h>
+
 #include "asm-generic/int.h"
 #include "asm/parasite.h"
 #include "asm/ptrace.h"
@@ -22,9 +24,11 @@ typedef struct parasite_ctl_s {
 	void		*remote_map;
 	void		*local_map;
 	unsigned long	map_length;
+
+	bool		was_seized;
 } parasite_ctl_t;
 
-extern parasite_ctl_t *parasite_start(pid_t pid, char *path, void *arg_p, unsigned int arg_s);
+extern parasite_ctl_t *parasite_start(pid_t pid, char *path, void *arg_p, unsigned int arg_s, bool seized);
 extern int parasite_end(parasite_ctl_t *ptr);
 extern int parasite_execute_syscall_trap(parasite_ctl_t *ctl, user_regs_struct_t *regs);
 extern int parasite_set_return_value(parasite_ctl_t *ctl, unsigned long val);

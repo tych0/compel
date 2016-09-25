@@ -405,7 +405,7 @@ static int gen_std_saddr(struct sockaddr_un *saddr, int key)
 	return sun_len;
 }
 
-static parasite_ctl_t *parasite_ctl_init(pid_t pid, char *blob_path, void *arg_p, unsigned int arg_s)
+static parasite_ctl_t *parasite_ctl_init(pid_t pid, char *blob_path, void *arg_p, unsigned int arg_s, bool seized)
 {
 	prologue_init_args_t *args;
 	unsigned long start, end;
@@ -431,6 +431,7 @@ static parasite_ctl_t *parasite_ctl_init(pid_t pid, char *blob_path, void *arg_p
 	}
 	ctl->ctl_sock = -1;
 	ctl->ctl_accepted = -1;
+	ctl->was_seized = seized;
 
 	if (fstat(plugin_fd, &plugin_st)) {
 		pr_perror("Failed to obtain statistics on %s", blob_path);
@@ -573,17 +574,24 @@ err_restore:
 	goto err;
 }
 
-parasite_ctl_t *parasite_start(pid_t pid, char *path, void *arg_p, unsigned int arg_s)
+parasite_ctl_t *parasite_start(pid_t pid, char *path, void *arg_p, unsigned int arg_s, bool seized)
 {
 	user_regs_struct_t regs;
 	parasite_ctl_t *ctl;
 	int task_state;
 	int ret = -1;
 
-	task_state = seize_task(pid);
-	if (task_state < 0) {
-		pr_err("Can't seize task %d\n", pid);
-		return ERR_PTR(-1);
+	if (!seized) {
+		task_state = seize_task(pid);
+		if (task_state < 0) {
+			pr_err("Can't seize task %d\n", pid);
+			return ERR_PTR(-1);
+		}
+	} else {
+		/* if we aren't supposed to seize the task, the user must have
+		 * done it herself
+		 */
+		task_state = TASK_STOPPED;
 	}
 
 	if (task_in_compat_mode(pid)) {
@@ -592,7 +600,7 @@ parasite_ctl_t *parasite_start(pid_t pid, char *path, void *arg_p, unsigned int 
 	}
 
 	pr_debug("Initialize parasite control block\n");
-	ctl = parasite_ctl_init(pid, path, arg_p, arg_s);
+	ctl = parasite_ctl_init(pid, path, arg_p, arg_s, seized);
 	if (!ctl)
 		goto err_unseize;
 
@@ -630,6 +638,7 @@ int parasite_end(parasite_ctl_t *ptr)
 	int ret = -1;
 	int status;
 	pid_t pid;
+	bool was_seized;
 
 	if (IS_ERR_OR_NULL(ctl))
 		return (int)PTR_ERR(ctl);
@@ -692,10 +701,12 @@ int parasite_end(parasite_ctl_t *ptr)
 	ret = 0;
 
 recover:
+	was_seized = ctl->was_seized;
 	ret |= parasite_ctl_fini(ctl);
 	xfree(ctl);
 
-	ret |= unseize_task(pid, task_state);
+	if (!was_seized)
+		ret |= unseize_task(pid, task_state);
 	return ret;
 }
 

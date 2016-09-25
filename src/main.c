@@ -183,7 +183,7 @@ int main(int argc, char *argv[])
 		if (libcompel_pack_argv(blob, argc - optind, argv + optind, &arg_p, &arg_s))
 			return 1;
 
-		return libcompel_exec(pid, blob, arg_p, arg_s);
+		return libcompel_exec(pid, blob, arg_p, arg_s, false);
 	}
 
 	if (!strcmp(action, "pack")) {

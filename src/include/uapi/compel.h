@@ -5,6 +5,7 @@
 #ifndef __UAPI_LIBCOMPEL_H__
 #define __UAPI_LIBCOMPEL_H__
 
+#include <stdbool.h>
 #include <sys/types.h>
 
 struct compel_exec_handle;
@@ -22,8 +23,8 @@ extern int libcompel_pack_argv(char *blob, int argc, char **argv, void **arg_p, 
  * Main parasite run routines
  */
 
-extern int libcompel_exec(pid_t pid, char *path, void *arg_p, unsigned int arg_s);
-extern compel_exec_handle_t libcompel_exec_start(pid_t pid, char *path, void *arg_p, unsigned int arg_s, int *err);
+extern int libcompel_exec(pid_t pid, char *path, void *arg_p, unsigned int arg_s, bool seized);
+extern compel_exec_handle_t libcompel_exec_start(pid_t pid, char *path, void *arg_p, unsigned int arg_s, int *err, bool seized);
 extern int libcompel_exec_end(compel_exec_handle_t h);
 extern int libcompel_set_return_value(compel_exec_handle_t h, unsigned long val);
 extern int libcompel_set_regs(compel_exec_handle_t h, void *regs);
