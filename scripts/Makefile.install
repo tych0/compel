@@ -13,7 +13,7 @@ compel.pc: compel.pc.in
 		compel.pc.in > compel.pc
 
 .PHONY: install
-install: compel.pc
+install: compel.pc src/lib/libcompel.so $(PROGRAM)
 	$(Q) $(MAKE) $(run) -f Makefile headers-dst-dir=$(INCLUDEDIR) install-headers
 	$(Q) $(MAKE) $(run) -f Makefile \
 		devel-default-includedir=$(INCLUDEDIR) \
